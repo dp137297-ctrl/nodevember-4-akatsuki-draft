@@ -23,6 +23,18 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const connectDB = require('./config/db');
+
+// Connect to database on request (vital for serverless cold starts)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+  } catch (err) {
+    console.error('[DB Connection Middleware]:', err.message);
+  }
+  next();
+});
+
 // Request logging in development
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));
