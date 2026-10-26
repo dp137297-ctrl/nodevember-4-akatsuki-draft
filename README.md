@@ -61,9 +61,7 @@ You do **not** need to install MongoDB on your PC. MongoDB Atlas is hosted in th
    - Select any provider/region (e.g. AWS / Mumbai or Singapore).
    - Click **Create Deployment**.
 3. **Set Security (Username & Password)**:
-   - Create a database user, for example:
-     - Username: `akatsuki_admin`
-     - Password: `Password123` (Save this password!)
+   - Create a database user (e.g. choose any username and a secure password).
 4. **Allow Network Access**:
    - Go to **Network Access** in the left sidebar.
    - Click **Add IP Address** -> select **Allow Access from Anywhere** (`0.0.0.0/0`).
@@ -71,15 +69,13 @@ You do **not** need to install MongoDB on your PC. MongoDB Atlas is hosted in th
 5. **Get Your Connection String**:
    - In the **Database** tab, click **Connect** on your cluster.
    - Choose **Drivers** (Node.js).
-   - Copy the connection string. It looks like:
-     ```
-     mongodb+srv://akatsuki_admin:<password>@cluster0.xxxx.mongodb.net/?retryWrites=true&w=majority
-     ```
+   - Copy your connection string template.
 6. **Paste into `.env`**:
    - Open your `.env` file in the IDE.
-   - Replace `<password>` with your actual password and add the database name:
+   - Add your connection string:
      ```env
-     MONGO_URI=mongodb+srv://akatsuki_admin:Password123@cluster0.xxxx.mongodb.net/akatsuki_draft?retryWrites=true&w=majority
+     MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-address>.mongodb.net/Nodevember?retryWrites=true&w=majority
+     DB_NAME=Nodevember
      ```
 
 ---
