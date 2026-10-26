@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
-
+const mongoose = require('mongoose');
 const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
@@ -30,12 +30,14 @@ if (process.env.NODE_ENV !== 'test') {
 
 // Root / Health Check route
 app.get('/', (req, res) => {
+  const isDbConnected = mongoose.connection.readyState === 1;
   res.status(200).json({
     success: true,
     platform: "Akatsuki's Draft: AI-Enabled Content Sharing Platform",
     event: 'Nodevember 4.0',
     version: '1.0.0',
     status: 'Server is running smoothly',
+    database: isDbConnected ? 'Connected to MongoDB Atlas' : 'Connecting or checking credentials',
     documentation: {
       auth: [
         'POST /auth/register',

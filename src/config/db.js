@@ -1,30 +1,51 @@
 const mongoose = require('mongoose');
 
-const connectDB = async () => {
-  try {
-    const connectionString =
-      process.env.MONGODB_URI ||
-      process.env.MONGO_URI ||
-      'mongodb://127.0.0.1:27017/Nodevember';
-    const dbName = process.env.DB_NAME || 'Nodevember';
+// Cache the MongoDB connection across serverless invocations
+let cached = global.mongoose;
 
-    const conn = await mongoose.connect(connectionString, {
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
+const connectDB = async () => {
+  if (cached.conn && mongoose.connection.readyState === 1) {
+    return cached.conn;
+  }
+
+  const connectionString =
+    process.env.MONGODB_URI ||
+    process.env.MONGO_URI ||
+    'mongodb://127.0.0.1:27017/Nodevember';
+
+  const dbName = process.env.DB_NAME || 'Nodevember';
+
+  if (!cached.promise) {
+    const opts = {
       dbName,
-    });
-    console.log(`[MongoDB] Connected successfully to host: ${conn.connection.host}`);
-    console.log(`[MongoDB] Active Database: ${conn.connection.name}`);
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of hanging
+    };
+
+    cached.promise = mongoose
+      .connect(connectionString, opts)
+      .then((m) => {
+        console.log(`[MongoDB] Connected successfully to host: ${m.connection.host}`);
+        console.log(`[MongoDB] Active Database: ${m.connection.name}`);
+        return m;
+      })
+      .catch((err) => {
+        cached.promise = null;
+        console.error(`[MongoDB Connection Error] ${err.message}`);
+        return null;
+      });
+  }
+
+  try {
+    cached.conn = await cached.promise;
+    return cached.conn;
   } catch (error) {
+    cached.promise = null;
     console.error(`[MongoDB Connection Error] ${error.message}`);
-    console.error(`
-      Troubleshooting tips:
-      1. If running locally, ensure MongoDB service is started (e.g. 'net start MongoDB' or 'mongod').
-      2. If using MongoDB Atlas, check that your IP address is whitelisted (Network Access -> 0.0.0.0/0).
-      3. Verify your MONGO_URI in your .env file.
-    `);
-    // Do not exit process in development immediately to allow API discovery/testing, but log error
-    if (process.env.NODE_ENV === 'production') {
-      process.exit(1);
-    }
+    return null;
   }
 };
 
