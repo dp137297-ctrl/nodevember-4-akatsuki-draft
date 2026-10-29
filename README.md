@@ -1,235 +1,159 @@
-# 🥷 Akatsuki’s Draft: AI-Enabled Content Sharing Platform (Backend)
-### 🏆 Nodevember 4.0 Submission
+# 🥷 Akatsuki’s Draft
 
-Backend for Akatsuki’s Draft, an AI-powered content-sharing platform featuring JWT authentication, MongoDB integration, post and draft management, admin approval workflows, and AI-based content improvement.
+### Nodevember 4.0 — Backend Submission
 
-A full-featured Node.js, Express, MongoDB, and Google Gemini AI backend built according to the **Nodevember 4.0 Akatsuki's Draft** specifications.
+<p align="center">
+  <strong>✨ Every great idea deserves a better draft.</strong>
+  <br />
+  An AI-powered content-sharing platform built with Node.js, Express, MongoDB, and Google Gemini AI.
+</p>
 
----
-
-## ⚡ Direct Answer: Do I have to install or just connect?
-
-| Service | Do you need to install locally? | How it works |
-| :--- | :--- | :--- |
-| **MongoDB Atlas** | ❌ **NO installation needed** | Simply create a free database at [mongodb.com/atlas](https://www.mongodb.com/cloud/atlas) and paste your connection string into `.env`. That's it! |
-| **Postman** | ❌ **No special setup** | If you have Postman (desktop or web at [web.postman.co](https://web.postman.co)), just click **Import** and select the pre-built `postman_collection.json` included in this folder. |
-| **Google Gemini AI** | ❌ **NO installation needed** | Get a free API key at [aistudio.google.com](https://aistudio.google.com/app/apikey) and paste it into `.env`. |
-
----
-
-## 📁 Project Architecture & Files Created
-
-```
-Nodevenmber-re- 4/
-├── src/
-│   ├── config/
-│   │   ├── db.js                 # MongoDB Mongoose connection
-│   │   └── gemini.js             # Google Gemini AI integration & fallback
-│   ├── controllers/
-│   │   ├── authController.js     # User registration, login, getMe (JWT)
-│   │   ├── postController.js     # CRUD, draft management, public feed
-│   │   ├── adminController.js    # Pending queue, post approve, reject
-│   │   └── aiController.js       # AI content enhancement (saves new draft)
-│   ├── middlewares/
-│   │   ├── authMiddleware.js     # JWT verification, Role authorization
-│   │   └── errorMiddleware.js    # Centralized 404 & error handlers
-│   ├── models/
-│   │   ├── User.js               # User schema { name, email, password, role }
-│   │   └── Post.js               # Post schema { title, description, content, ... }
-│   ├── routes/
-│   │   ├── authRoutes.js         # /auth endpoints
-│   │   ├── postRoutes.js         # /posts endpoints
-│   │   ├── adminRoutes.js        # /admin endpoints
-│   │   └── aiRoutes.js           # /ai endpoints
-│   └── app.js                    # Express app configuration & middlewares
-├── server.js                     # HTTP server entry point
-├── postman_collection.json       # Ready-to-import Postman collection with tests
-├── .env.example                  # Environment template
-├── .env                          # Local environment variables
-└── README.md                     # Complete step-by-step guide
-```
+<p align="center">
+  ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+  ![Express](https://img.shields.io/badge/Express-black?style=for-the-badge&logo=express)
+  ![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+  ![Gemini AI](https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge)
+</p>
 
 ---
 
-## 🚀 Step 1: Connect to MongoDB Atlas (2 Minutes, No Local Install)
+## 🌑 About the project
 
-You do **not** need to install MongoDB on your PC. MongoDB Atlas is hosted in the cloud for free:
+**Akatsuki’s Draft** is a backend for a content-sharing platform where users can create drafts, manage posts, and enhance their writing with AI.
 
-1. **Sign up / Log in**: Go to [https://www.mongodb.com/cloud/atlas/register](https://www.mongodb.com/cloud/atlas/register).
-2. **Create a Free Cluster**:
-   - Choose **M0 Free (Shared)**.
-   - Select any provider/region (e.g. AWS / Mumbai or Singapore).
-   - Click **Create Deployment**.
-3. **Set Security (Username & Password)**:
-   - Create a database user (e.g. choose any username and a secure password).
-4. **Allow Network Access**:
-   - Go to **Network Access** in the left sidebar.
-   - Click **Add IP Address** -> select **Allow Access from Anywhere** (`0.0.0.0/0`).
-   - Click **Confirm**.
-5. **Get Your Connection String**:
-   - In the **Database** tab, click **Connect** on your cluster.
-   - Choose **Drivers** (Node.js).
-   - Copy your connection string template.
-6. **Paste into `.env`**:
-   - Open your `.env` file in the IDE.
-   - Add your connection string:
-     ```env
-     MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-address>.mongodb.net/Nodevember?retryWrites=true&w=majority
-     DB_NAME=Nodevember
-     ```
+It includes JWT authentication, MongoDB integration, and an admin approval workflow that helps keep published content organized.
+
+### ✨ Key features
+
+- 🔐 User registration, login, and JWT authentication
+- 📝 Create, update, and manage posts and drafts
+- 🛡️ Admin approval and rejection workflows
+- 🤖 AI-powered content improvement using Gemini
+- 🗄️ MongoDB database integration
+- 🧪 API testing with Postman
+
+## 🧰 Tech stack
+
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Database:** MongoDB with Mongoose
+- **Authentication:** JWT and bcrypt
+- **AI integration:** Google Gemini
+- **API testing:** Postman
 
 ---
 
-## 🤖 Step 2: Get Free Google Gemini API Key
+## 🚀 Getting started
 
-1. Go to [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. Sign in with your Google account.
-3. Click **Get API key** -> **Create API key in new project**.
-4. Copy the generated key.
-5. In your `.env` file, paste your key:
-   ```env
-   GEMINI_API_KEY=AIzaSy...your_real_key_here
-   ```
+### Prerequisites
 
-*(Note: If you haven't added an API key yet, the server has an automatic fallback enhancer that simulates AI improvements so tests will never fail!)*
+- [Node.js](https://nodejs.org/)
+- [MongoDB Atlas](https://www.mongodb.com/atlas) account
+- [Google AI Studio API key](https://aistudio.google.com/app/apikey)
+- Postman (optional)
 
----
-
-## 💻 Step 3: Start the Backend Server
-
-Open your terminal in the project directory and run:
+### 1. Clone the repository
 
 ```bash
-# Start in development mode with live reloading
+git clone <YOUR_REPOSITORY_URL>
+cd <YOUR_PROJECT_FOLDER>
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+PORT=5000
+NODE_ENV=development
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_random_secret
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+Replace the example values with your actual credentials. Never upload `.env` or expose API keys on GitHub.
+
+### 4. Start the server
+
+Use the scripts configured in your `package.json`:
+
+```bash
 npm run dev
 ```
 
-Or for standard execution:
+Or, if a start script is configured:
+
 ```bash
 npm start
 ```
 
-You will see:
-```
-====================================================
-🚀 Akatsuki's Draft Backend Server is active!
-📡 URL: http://localhost:5000
-📋 Event: Nodevember 4.0
-🛡️  Environment: development
-====================================================
-[MongoDB] Connected successfully to host: cluster0...
-[MongoDB] Database Name: akatsuki_draft
-```
+The expected local URL is `http://localhost:5000`.
 
 ---
 
-## 📬 Step 4: Connect & Test with Postman (1-Click Import)
+## 📡 API endpoints
 
-We have created `postman_collection.json` in the root folder. It includes all routes and **auto-stores your tokens and IDs**.
+### Authentication
 
-### How to Import:
-1. Open **Postman**.
-2. Click the **Import** button (top-left).
-3. Drag and drop the `postman_collection.json` file from your project folder (or click *Files* and select it).
-4. You will see a new collection: **"Nodevember 4.0 - Akatsuki's Draft API"**.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/auth/register` | Register a user |
+| POST | `/auth/login` | Log in |
+| GET | `/auth/me` | Get current user profile |
 
-### Recommended Testing Flow in Postman:
+### Posts and drafts
 
-#### 1. Authentication (`1. Authentication` folder)
-1. **Register Regular User (`POST /auth/register`)**:
-   - Registers `itachi@akatsuki.com` with role `"user"`.
-   - **Postman automatically saves `{{userToken}}`!**
-2. **Register Admin User (`POST /auth/register`)**:
-   - Registers `pain@akatsuki.com` with role `"admin"`.
-   - **Postman automatically saves `{{adminToken}}`!**
-3. **Get Profile (`GET /auth/me`)**:
-   - Retrieves the logged-in user profile using `Bearer {{userToken}}`.
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/posts` | Create a post or draft |
+| GET | `/posts` | View approved posts |
+| GET | `/posts/:id` | View a post |
+| GET | `/posts/my-posts` | View your own posts |
+| PATCH | `/posts/:id` | Update your post |
+| DELETE | `/posts/:id` | Delete your post |
 
-#### 2. User - Post Management (`2. User - Post Management` folder)
-4. **Create Post / Draft (`POST /posts`)**:
-   - Creates a post in `"draft"` status.
-   - **Postman automatically saves `{{postId}}`!**
-5. **View My Posts and Drafts (`GET /posts/my-posts`)**:
-   - Shows all posts created by the logged-in user.
-6. **Submit Post for Approval (`POST /posts` or `PATCH /posts/:id`)**:
-   - Updates `status: "pending"` so the post enters the admin review queue.
-7. **View Approved Posts (`GET /posts`)**:
-   - Public feed. (Initially empty until an admin approves a post).
+### Admin workflow
 
-#### 3. Admin - Post Approval (`3. Admin - Post Approval` folder)
-8. **View Pending Posts (`GET /admin/posts/pending`)**:
-   - Requires `{{adminToken}}`. Lists all posts waiting for review.
-9. **Approve Post (`PATCH /admin/posts/approve/:id`)**:
-   - Admin approves the post (`status: "approved"`). Now it's visible in `GET /posts`!
-10. **Reject Post (`PATCH /admin/posts/reject/:id`)**:
-    - Admin rejects a post (`status: "rejected"`).
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/admin/posts/pending` | View pending posts |
+| PATCH | `/admin/posts/approve/:id` | Approve a post |
+| PATCH | `/admin/posts/reject/:id` | Reject a post |
 
-#### 4. AI Content Improvement (`4. AI Integration - Content Improvement` folder)
-11. **Improve Content with AI (`POST /ai/improve/:postId`)**:
-    - Passes `:postId` of an existing post.
-    - Gemini AI analyzes and enhances the title, description, and content.
-    - **Saves as a brand new post in `draft` status with a brand new ID under the same user.**
-    - The original post remains completely preserved!
+### AI content improvement
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | `/ai/improve/:postId` | Generate an improved draft |
+
+Protected endpoints require a valid bearer token. Admin endpoints require administrator authorization.
 
 ---
 
-## 📋 API Specification Summary
+## 🧪 Testing with Postman
 
-### 1. Authentication
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/auth/register` | Register a new user (`name, email, password, role`) | Public |
-| `POST` | `/auth/login` | Log in with credentials, returns JWT | Public |
-| `GET` | `/auth/me` | Fetch logged-in user profile | Bearer Token |
+If `postman_collection.json` is included in the repository:
 
-### 2. User — Post Management
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/posts` | Create a new post or draft | Bearer Token |
-| `GET` | `/posts` | View all approved posts | Public |
-| `GET` | `/posts/:id` | View an approved post by ID | Public / Private |
-| `GET` | `/posts/my-posts` | View your own posts and drafts | Bearer Token |
-| `PATCH` | `/posts/:id` | Update your own post | Bearer Token (Creator) |
-| `DELETE` | `/posts/:id` | Delete your own post | Bearer Token (Creator) |
-
-### 3. Admin — Post Approval
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `GET` | `/admin/posts/pending` | View posts awaiting approval | Admin Only |
-| `PATCH` | `/admin/posts/approve/:id` | Approve a post (`status: "approved"`) | Admin Only |
-| `PATCH` | `/admin/posts/reject/:id` | Reject a post (`status: "rejected"`) | Admin Only |
-
-### 4. AI Integration — Content Improvement
-| Method | Endpoint | Description | Access |
-| :--- | :--- | :--- | :--- |
-| `POST` | `/ai/improve/:postId` | Enhance content using Gemini AI & save as new draft with new ID | Bearer Token |
+1. Open Postman and select **Import**.
+2. Select the collection file.
+3. Configure the base URL and authentication tokens.
+4. Test registration, login, post management, admin approval, and AI enhancement.
 
 ---
 
-## 🛡️ Database Schemas
+## 🏆 Nodevember 4.0
 
-### User Schema:
-```javascript
-{
-  name: String,       // Required, trimmed
-  email: String,      // Required, unique, lowercase, regex-validated
-  password: String,   // Required, bcrypt-hashed (salt rounds: 10)
-  role: String,       // Enum: ['user', 'admin'], default: 'user'
-  createdAt: Date     // Timestamp
-}
-```
+Built with curiosity, code, and a little Akatsuki spirit. 🌑
 
-### Post Schema:
-```javascript
-{
-  title: String,        // Required, trimmed
-  description: String,  // Required, trimmed
-  content: String,      // Required
-  image: String,        // Optional image URL
-  category: String,     // Required
-  createdBy: ObjectId,  // Ref: 'User'
-  status: String,       // Enum: ['draft', 'pending', 'approved', 'rejected'], default: 'draft'
-  createdAt: Date       // Timestamp
-}
-```
->>>>>>> 1d24834 (feat: complete Akatsuki's Draft backend implementation for Nodevember 4.0)
+**Draft thoughtfully. Create boldly. Share meaningfully.**
+
+### 👨‍💻 Maintainer
+
+- **GitHub:** `<YOUR_GITHUB_PROFILE_URL>`
+- **Repository:** `<YOUR_REPOSITORY_URL>`
